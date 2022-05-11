@@ -42,9 +42,6 @@
         "eslint-utils": "^3.0.0",
         "node-estree": "^3.1.0"
     },
-    "peerDependencies": {
-        "eslint": "^8.15.0"
-    },
     "jest": {
         "coveragePathIgnorePatterns": [
             "src/tests/(.*)/(.*).ts"
