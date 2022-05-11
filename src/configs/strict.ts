@@ -3,8 +3,8 @@ export = {
     parserOptions: { sourceType: 'module' },
     rules: {
         '@anshulsanghi/enforce-apollo-error-handling/handle-query-error':
-            'error',
+            'strict',
         '@anshulsanghi/enforce-apollo-error-handling/handle-mutation-error':
-            'error',
+            'strict',
     },
 };
