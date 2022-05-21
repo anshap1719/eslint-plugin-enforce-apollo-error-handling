@@ -51,6 +51,28 @@ ruleTester.run('handle-query-error', handleQueryError, {
                 );
             `,
         },
+        {
+            code: `const { data, loading } = useProductsQueryFilters<CheckoutQueryResultData>(
+                    checkoutQuery,
+                    {
+                        variables: {
+                            store,
+                            language,
+                            cartType,
+                        },
+                        pollInterval: 30_000,
+                        fetchPolicy: 'network-only',
+                        notifyOnNetworkStatusChange: true,
+                        onCompleted: () => {
+                            onCompleted();
+                            if (!initialized) {
+                                setInitialized(true);
+                            }
+                        },
+                    }
+                );
+            `,
+        },
     ],
     invalid: [
         {
