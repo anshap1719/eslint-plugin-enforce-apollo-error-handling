@@ -1,7 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import createRule from '../util/createRule';
 
-const MUTATION_HOOK_PATTERN = /use(.*)Mutation/g;
+const MUTATION_HOOK_PATTERN = /^use(.*)Mutation$/g;
 
 const handleMutationError = createRule({
     name: 'handle-mutation-error',
@@ -14,9 +14,19 @@ const handleMutationError = createRule({
             general: 'Handle error returned from this mutation',
         },
         type: 'problem',
-        schema: [],
+        schema: [
+            {
+                type: 'object',
+                properties: {
+                    ignoreHooks: {
+                        type: 'array',
+                    },
+                },
+                additionalProperties: false,
+            },
+        ],
     },
-    defaultOptions: [{ parser: '@typescript-eslint/parser' }],
+    defaultOptions: [{ ignoreHooks: [] as string[] }],
     create(context) {
         return {
             VariableDeclarator(node) {
@@ -29,6 +39,15 @@ const handleMutationError = createRule({
                 }
 
                 if (!node.init.callee.name.match(MUTATION_HOOK_PATTERN)) {
+                    return;
+                }
+
+                const ignoredHooks = context.options[0]?.ignoreHooks;
+
+                if (
+                    ignoredHooks &&
+                    ignoredHooks.includes(node.init.callee.name)
+                ) {
                     return;
                 }
 
