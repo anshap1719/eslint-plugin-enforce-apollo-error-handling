@@ -15,9 +15,19 @@ const handleQueryError = createRule({
             lazyQuery: 'Handle error returned from this lazy query',
         },
         type: 'problem',
-        schema: [],
+        schema: [
+            {
+                type: 'object',
+                properties: {
+                    ignoreHooks: {
+                        type: 'array',
+                    },
+                },
+                additionalProperties: false,
+            },
+        ],
     },
-    defaultOptions: [{ parser: '@typescript-eslint/parser' }],
+    defaultOptions: [{ ignoreHooks: [] as string[] }],
     create(context) {
         return {
             VariableDeclarator(node) {
@@ -30,6 +40,15 @@ const handleQueryError = createRule({
                 }
 
                 if (!node.init.callee.name.match(QUERY_HOOK_PATTERN)) {
+                    return;
+                }
+
+                const ignoredHooks = context.options[0]?.ignoreHooks;
+
+                if (
+                    ignoredHooks &&
+                    ignoredHooks.includes(node.init.callee.name)
+                ) {
                     return;
                 }
 

@@ -29,6 +29,29 @@ ruleTester.run('handle-mutation-error', handleMutationError, {
                 );
             `,
         },
+        {
+            code: `const [runMutation, { loading }] = useMutation<CheckoutQueryResultData>(
+                    checkoutQuery,
+                    {
+                        variables: {
+                            store,
+                            language,
+                            cartType,
+                        },
+                        pollInterval: 30_000,
+                        fetchPolicy: 'network-only',
+                        notifyOnNetworkStatusChange: true,
+                        onCompleted: () => {
+                            onCompleted();
+                            if (!initialized) {
+                                setInitialized(true);
+                            }
+                        },
+                    }
+                );
+            `,
+            options: [{ ignoreHooks: ['useMutation'] }],
+        },
     ],
     invalid: [
         {
