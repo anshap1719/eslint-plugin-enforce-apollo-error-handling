@@ -1,6 +1,6 @@
 {
     "name": "@anshulsanghi/eslint-plugin-enforce-apollo-error-handling",
-    "version": "1.1.3",
+    "version": "1.1.4",
     "description": "ESLint Plugin To Enforce Error Handling For Errors Returned From Apollo GraphQL Queries",
     "main": "dist/index.js",
     "repository": {
